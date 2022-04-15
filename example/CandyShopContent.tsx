@@ -13,14 +13,20 @@ import {
 export const CandyShopContent: React.FC = () => {
   const { connection } = useConnection();
   const wallet = useAnchorWallet();
-  const env: web3.Cluster = 'devnet';
+  const env: web3.Cluster = 'mainnet-beta';
 
   const candyShopRef = useRef<CandyShop>(
     new CandyShop(
       new web3.PublicKey(CREATOR_ADDRESS),
       new web3.PublicKey(TREASURY_MINT),
       new web3.PublicKey(CANDY_SHOP_PROGRAM_ID),
-      env
+      env,
+      {
+        currencySymbol: '$ROUNDIE',
+        currencyDecimals: 0,
+        priceDecimals: 0,
+        volumeDecimals: 1
+      }
     )
   );
 
@@ -45,21 +51,8 @@ export const CandyShopContent: React.FC = () => {
           wallet={wallet}
           candyShop={candyShopRef.current}
           walletConnectComponent={<WalletMultiButton />}
-          filters={[
-            {name: 'Sword', identifier: -280213123 },
-            {name: 'Happy', identifier: -38328789 },
-          ]}
         />
       </div>
-
-      <h1 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 30 }}>Order Detail</h1>
-      <OrderDetail
-        tokenMint={'EVdLAk8GeWRsj2HpyBujG1pJPip5gjkPcZ76QinsHHtJ'}
-        backUrl={'/'}
-        candyShop={candyShopRef.current}
-        walletConnectComponent={<WalletMultiButton />}
-        wallet={wallet}
-      />
 
       <h1 style={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 30 }}>Sell</h1>
       <Sell
